@@ -1,25 +1,20 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-# import_to SomeClass, :some => 'default', :values => 'orsomethinglikethat'
-# start_at_row 1
-# 
-# before_row :prepare_row
-# after_row :save_record, :then_do_something
-# 
-# foo; bar; _SKIP_; another;
-# 
-# woot.map lamda{|record| record[woot.index].to_i }
-# bam.map :map_bam
-
-# Time to add your specs!
-# http://rspec.info/
 describe CsvMapper::RowMap do
   
   class TestMapToClass
     attr_accessor :foo, :bar, :baz
   end
   
-  class TestMapContext; end;
+  class TestMapContext
+    def transform(row)
+      :transform_success
+    end
+    
+    def change_name(row, target)
+      row[0] = :changed_name
+    end
+  end
   
   before(:each) do
     @row_map = CsvMapper::RowMap.new(TestMapContext.new)
@@ -55,6 +50,29 @@ describe CsvMapper::RowMap do
     result.baz.should eql :default_baz
   end
     
+  it "should start at the specified CSV row" do
+    @row_map.start_at_row.should be 0
+    @row_map.start_at_row 1
+    @row_map.start_at_row.should be 1
+  end
+  
+  it "should allow before row processing" do
+    @row_map.before_row :change_name, lambda{|row, target| row[1] = 'bar'}
+    
+    @row_map.first_name
+    @row_map.foo
+    
+    result = @row_map.parse(@csv_row)
+    result.first_name.should eql :changed_name
+    result.foo.should_not equal 'bar'
+  end
+  
+  it "should allow after row processing" do
+    @row_map.after_row lambda{|row, target| target.bam = :woot}
+    
+    @row_map.parse(@csv_row).bam.should eql :woot
+  end
+  
   it "should have a moveable cursor" do
     @row_map.cursor.should be 0
     @row_map.move_cursor
@@ -84,5 +102,10 @@ describe CsvMapper::RowMap do
     pre_cursor = @row_map.cursor
     @row_map.last_name(1).index.should be 1
     @row_map.cursor.should be 1
+  end
+  
+  it "should share it context with its mappings" do
+    @row_map.first_name.map(:transform)
+    @row_map.parse(@csv_row).first_name.should eql :transform_success
   end
 end

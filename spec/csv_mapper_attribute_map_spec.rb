@@ -5,7 +5,7 @@ describe CsvMapper::AttributeMap do
   class TestContext
     def transform_it(row)
       :transform_it_success
-    end;
+    end
   end
     
   before(:each) do
