@@ -32,10 +32,11 @@ describe CsvMapper do
   it "should import a CSV File IO" do
           
     results = import_csv(File.dirname(__FILE__) + '/test.csv') do
-      first_name; last_name; age
+      start_at_row 1
+      [first_name, last_name, age]
     end
     
     results.size.should be 3
-  end    
+  end 
   
 end

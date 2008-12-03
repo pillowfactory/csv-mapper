@@ -88,7 +88,7 @@ describe CsvMapper::RowMap do
   end
   
   it "should maintain a collection of attribute mappings" do
-    @row_map.attributes.should be_kind_of Enumerable
+    @row_map.mapped_attributes.should be_kind_of Enumerable
   end
   
   it "should lazy initialize attribute maps and move the cursor" do

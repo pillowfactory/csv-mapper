@@ -1,6 +1,5 @@
 History.txt
 Manifest.txt
-PostInstall.txt
 README.rdoc
 Rakefile
 lib/csv-mapper.rb
@@ -8,6 +7,9 @@ script/console
 script/destroy
 script/generate
 spec/csv-mapper_spec.rb
+spec/csv-mapper_row_map_spec.rb
+spec/csv-mapper_attribute_map_spec.rb
+spec/test.csv
 spec/spec.opts
 spec/spec_helper.rb
 tasks/rspec.rake
