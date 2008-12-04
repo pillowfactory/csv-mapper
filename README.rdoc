@@ -38,7 +38,7 @@ FasterCSV[http://fastercsv.rubyforge.org/]
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* TBD
 
 == LICENSE:
 
