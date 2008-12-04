@@ -75,35 +75,29 @@ module CsvMapper
     CsvMapper::RowMap.new(self, &map_block)
   end
   
-  # Load a CSV file from the given csv_path and map the values according to the definition in the given block.
-  # Using the optional row_map (create using map_csv) parameter will take presidence over a block definition.
-  def import_csv(csv_path, row_map=nil, &map_block)
-    map = row_map || map_csv(&map_block)
+  # Load CSV data and map the values according to the definition in the given block.
+  # Accepts either a file path, String, or IO as +data+.  Defaults to file path.
+  # 
+  # The following +options+ may be used:
+  # <tt>:type</tt>:: defaults to <tt>:file_path</tt>. Use <tt>:io</tt> to specify data as String or IO.
+  # <tt>:map</tt>:: Specify an instance of a RowMap to take presidence over a given block defintion.
+  #
+  def import(data, options={}, &map_block)
+    config = { :type => :file_path,
+               :map => map_csv(&map_block) }.merge!(options)
     
-    results, i = [], 0
-    FasterCSV.foreach(csv_path, map.parser_options) do |row|
+    csv_data = config[:type] == :io ? data : File.new(data, 'r')
+    map = config[:map]
+    
+    results = []
+    FasterCSV.new(csv_data, map.parser_options ).each_with_index do |row, i|
       results << map.parse(row) if i >= map.start_at_row
       i += 1
     end
     
     results
-  end
-  
-  # Load a CSV string representation from the given csv_string and map the values according to the definition in the given block.
-  # Using the optional row_map (create using map_csv) parameter will take presidence over a block definition.
-  def import_string(csv_string, row_map=nil, &map_block)
-    map = row_map || map_csv(&map_block)
-    
-    results, i = [], 0
-    FasterCSV.parse(csv_string, map.parser_options) do |row|
-      results << map.parse(row) if i >= map.start_at_row
-      i += 1
-    end
-    
-    results
-  end
+  end  
 
-  
   # CsvMapper::RowMap provides a simple, DSL-like interface for constructing mappings.
   # A CsvMapper::RowMap provides the main functionality of the library. It will mostly be used indirectly through the CsvMapper API, 
   # but may be useful to use directly for the dynamic CSV mappings.

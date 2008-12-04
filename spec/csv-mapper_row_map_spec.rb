@@ -34,8 +34,8 @@ describe CsvMapper::RowMap do
     @row_map.lname
     
     result = @row_map.parse(@csv_row)
-    result.fname.should eql @csv_row[0]
-    result.lname.should eql @csv_row[1]
+    result.fname.should == @csv_row[0]
+    result.lname.should == @csv_row[1]
   end
 
   it "should map to a ruby class with optional default attribute values" do
@@ -45,9 +45,9 @@ describe CsvMapper::RowMap do
     @row_map.bar
     
     (result = @row_map.parse(@csv_row)).should be_instance_of TestMapToClass
-    result.foo.should eql @csv_row[0]
-    result.bar.should eql @csv_row[1]
-    result.baz.should eql :default_baz
+    result.foo.should == @csv_row[0]
+    result.bar.should == @csv_row[1]
+    result.baz.should == :default_baz
   end
     
   it "should start at the specified CSV row" do
@@ -63,14 +63,14 @@ describe CsvMapper::RowMap do
     @row_map.foo
     
     result = @row_map.parse(@csv_row)
-    result.first_name.should eql :changed_name
+    result.first_name.should == :changed_name
     result.foo.should_not equal 'bar'
   end
   
   it "should allow after row processing" do
     @row_map.after_row lambda{|row, target| target.bam = :woot}
     
-    @row_map.parse(@csv_row).bam.should eql :woot
+    @row_map.parse(@csv_row).bam.should == :woot
   end
   
   it "should have a moveable cursor" do
@@ -89,12 +89,12 @@ describe CsvMapper::RowMap do
   
   it "should accept FasterCSV parser options" do
     @row_map.parser_options :row_sep => :auto
-    @row_map.parser_options[:row_sep].should eql :auto
+    @row_map.parser_options[:row_sep].should == :auto
   end
   
   it "should have a configurable the column delimiter" do
     @row_map.delimited_by '|'
-    @row_map.delimited_by.should eql '|'
+    @row_map.delimited_by.should == '|'
   end
   
   it "should maintain a collection of attribute mappings" do
@@ -116,6 +116,6 @@ describe CsvMapper::RowMap do
   
   it "should share it context with its mappings" do
     @row_map.first_name.map(:transform)
-    @row_map.parse(@csv_row).first_name.should eql :transform_success
+    @row_map.parse(@csv_row).first_name.should == :transform_success
   end
 end
