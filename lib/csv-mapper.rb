@@ -72,8 +72,7 @@ module CsvMapper
 
   # Create a new RowMap instance from the definition in the given block.
   def map_csv(&map_block)
-    (map = CsvMapper::RowMap.new(self)).instance_eval(&map_block)
-    map
+    CsvMapper::RowMap.new(self, &map_block)
   end
   
   # Load a CSV file from the given csv_path and map the values according to the definition in the given block.
@@ -105,7 +104,6 @@ module CsvMapper
   end
 
   
-  #
   # CsvMapper::RowMap provides a simple, DSL-like interface for constructing mappings.
   # A CsvMapper::RowMap provides the main functionality of the library. It will mostly be used indirectly through the CsvMapper API, 
   # but may be useful to use directly for the dynamic CSV mappings.
@@ -116,7 +114,7 @@ module CsvMapper
     attr_reader :mapped_attributes
     
     # Create a new instance with access to an evaluation context 
-    def initialize(context)
+    def initialize(context, &map_block)
       @context = context
       @before_filters = []
       @after_filters = []
@@ -124,6 +122,8 @@ module CsvMapper
       @start_at_row = 0
       @delimited_by = FasterCSV::DEFAULT_OPTIONS[:col_sep]
       @mapped_attributes = []
+      
+      self.instance_eval(&map_block) if block_given?
     end
     
     # Each row of a CSV is parsed and mapped to a new instance of a Ruby class; OpenStruct by default.
