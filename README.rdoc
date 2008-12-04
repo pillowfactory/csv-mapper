@@ -6,7 +6,7 @@ by Luke Pillow
 
 CsvMapper is a small library intended to simplify the common steps involved with importing CSV files to a usable form in Ruby.
 
-== SYNOPSIS:
+== EXAMPLES:
 
 The following example will import a CSV file to an Array of OpenStruct[http://ruby-doc.org/core/classes/OpenStruct.html] instances.
 
@@ -29,6 +29,21 @@ The following example will import a CSV file to an Array of OpenStruct[http://ru
   results.first.first_name  # John
   results.first.last_name   # Doe
   results.first.age         # 27
+
+==== Import to ActiveRecord Example
+Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV file to ActiveRecord models and save them.
+
+  class Person < ActiveRecord::Base; end
+
+  include CsvMapper
+  
+  results = import('/path/to/file.csv') do
+    map_to Person                                 # Map to the Person ActiveRecord class instead of the default OpenStruct.
+    after_row lambda{|row, person| person.save }  # Call this lambda and save each record after it's parsed.
+		
+    start_at_row 1
+    [first_name, last_name, age]
+  end
 	
 See CsvMapper for a more detailed description
 	
