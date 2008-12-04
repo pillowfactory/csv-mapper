@@ -80,7 +80,7 @@ module CsvMapper
     map = row_map || map_csv(&map_block)
     
     results, i = [], 0
-    FasterCSV.foreach(csv_path) do |row|
+    FasterCSV.foreach(csv_path, map.parser_options) do |row|
       results << map.parse(row) if i >= map.start_at_row
       i += 1
     end
@@ -94,7 +94,7 @@ module CsvMapper
     map = row_map || map_csv(&map_block)
     
     results, i = [], 0
-    FasterCSV.parse(csv_string) do |row|
+    FasterCSV.parse(csv_string, map.parser_options) do |row|
       results << map.parse(row) if i >= map.start_at_row
       i += 1
     end
@@ -118,7 +118,9 @@ module CsvMapper
       @context = context
       @before_filters = []
       @after_filters = []
+      @parser_options = {}
       @start_at_row = 0
+      @delimited_by = FasterCSV::DEFAULT_OPTIONS[:col_sep]
       @mapped_attributes = []
     end
     
@@ -160,9 +162,21 @@ module CsvMapper
       return target
     end
     
+    # Specify a hash of FasterCSV options to be used for CSV parsing
+    def parser_options(opts=nil)
+      @parser_options = opts if opts
+      @parser_options.merge :col_sep => @delimited_by 
+    end
+    
     # Convenience method to 'move' the cursor skipping the current index.
     def _SKIP_
       self.move_cursor
+    end
+    
+    # Specify the CSV column delimiter. Defaults to comma.
+    def delimited_by(delimiter=nil)
+      @delimited_by = delimiter if delimiter
+      @delimited_by
     end
     
     # Declare what row to begin parsing the CSV.

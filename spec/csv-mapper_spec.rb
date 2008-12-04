@@ -30,7 +30,6 @@ describe CsvMapper do
   end
   
   it "should import a CSV File IO" do
-          
     results = import_csv(File.dirname(__FILE__) + '/test.csv') do
       start_at_row 1
       [first_name, last_name, age]
@@ -38,5 +37,18 @@ describe CsvMapper do
     
     results.size.should be 3
   end 
+  
+  it "should import non-comma delimited files" do
+    piped_io = 'foo|bar|00|01'
+    
+    results = import_string(piped_io) do
+      delimited_by '|'
+      [first, second]
+    end
+    
+    results.should have(1).things
+    results[0].first.should eql 'foo'
+    results[0].second.should eql 'bar'
+  end
   
 end

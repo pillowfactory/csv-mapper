@@ -87,6 +87,16 @@ describe CsvMapper::RowMap do
     @row_map.cursor.should be(pre_cursor + 1)
   end
   
+  it "should accept FasterCSV parser options" do
+    @row_map.parser_options :row_sep => :auto
+    @row_map.parser_options[:row_sep].should eql :auto
+  end
+  
+  it "should have a configurable the column delimiter" do
+    @row_map.delimited_by '|'
+    @row_map.delimited_by.should eql '|'
+  end
+  
   it "should maintain a collection of attribute mappings" do
     @row_map.mapped_attributes.should be_kind_of Enumerable
   end
