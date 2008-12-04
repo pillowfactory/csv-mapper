@@ -38,7 +38,7 @@ Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV 
   include CsvMapper
   
   results = import('/path/to/file.csv') do
-    map_to Person                                 # Map to the Person ActiveRecord class instead of the default OpenStruct.
+    map_to Person # Map to the Person ActiveRecord class instead of the default OpenStruct.
     after_row lambda{|row, person| person.save }  # Call this lambda and save each record after it's parsed.
 		
     start_at_row 1
