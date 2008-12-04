@@ -1,22 +1,41 @@
-= csv-mapper
+= README
 
-* FIX (url)
+by {Luke Pillow}[http://www.pillowfactory.org]
 
 == DESCRIPTION:
 
-FIX (describe your package)
-
-== FEATURES/PROBLEMS:
-
-* FIX (list of features or problems)
+CsvMapper is a small library intended to simplify the common steps involved with importing CSV files to a usable form in Ruby.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+The following example will import a CSV file to an Array of OpenStruct[http://ruby-doc.org/core/classes/OpenStruct.html] instances.
 
+==== Example CSV File Structure
+
+  First Name,Last Name,Age
+  John,Doe,27
+  Jane,Doe,26
+  Bat,Man,52
+  ...etc...
+
+==== Simple Usage Example
+  include CsvMapper
+
+  results = import_csv('/path/to/file.csv') do
+    start_at_row 1
+    [first_name, last_name, age]
+  end
+
+  results.first.first_name  # John
+  results.first.last_name   # Doe
+  results.first.age         # 27
+	
+See CsvMapper for a more detailed description
+	
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+FasterCSV[http://fastercsv.rubyforge.org/] is recommended, but is not required nor declared a gem dependency.
+CsvMapper will use FasterCSV if it's available or it will fall back on CSV[http://ruby-doc.org/core/classes/CSV.html] if it's not.
 
 == INSTALL:
 
@@ -26,7 +45,7 @@ FIX (describe your package)
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME full name
+Copyright (c) 2008 Luke Pillow
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

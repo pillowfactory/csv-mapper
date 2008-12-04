@@ -3,6 +3,67 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'ostruct'
 
+# This module provides the main interface for importing CSV files & data to mapped Ruby objects.
+# = Usage
+# Including CsvMapper will provide three methods:
+# - +import_csv+
+# - +import_string+
+# - +map_csv+
+#
+# See csv-mapper.rb[link:files/lib/csv-mapper_rb.html] for method docs.
+#
+# === Import From File
+#   results = import_csv('/path/to/file.csv') do
+#     # declare mapping here
+#   end
+#
+# === Import From String
+#   results = import_string(csv_string) do
+#     # declare mapping here
+#   end
+#
+# === Mapping
+# Mappings are built inside blocks.  All three of CsvMapper's main API methods accept a block containing a mapping.
+# Maps are defined by using +map_to+, +start_at_row+, +before_row+, and +after_row+ (methods on CsvMapper::RowMap) and
+# by defining your own mapping attributes.
+# A mapping block uses an internal cursor to keep track of the order the mapping attributes are declared and use that order to 
+# know the corresponding CSV column index to associate with the attribute.
+# 
+# ===== The Basics
+# * +map_to+ - Override the default OpenStruct target. Accepts a class and an optional hash of default attribute names and values.
+# * +start_at_row+ - Specify what row to begin parsing at.  Use this to skip headers.
+# * +before_row+ - Accepts an Array of method name symbols or lambdas to be invoked before parsing each row.
+# * +after_row+ - Accepts an Array of method name symbols or lambdas to be invoked after parsing each row.
+# * <tt>\_SKIP_</tt> - Use as a placehold to skip a CSV column index.
+# 
+# ===== Attribute Mappings
+# Attribute mappings are created by using the name of the attribute to be mapped to.  
+# The order in which attribute mappings are declared determines the index of the corresponding CSV row.  
+# All mappings begin at the 0th index of the CSV row.
+#   foo  # maps the 0th CSV row position value to the value of the 'foo' attribute on the target object.
+#   bar  # maps the 1st row position to 'bar'
+# This could also be a nice one liner for easy CSV format conversion
+#   [foo, bar]  # creates the same attribute maps as above.
+# The mapping index may be specifically declared in two additional ways:
+#   foo(2)     # maps the 2nd CSV row position value to 'foo' and moves the cursor to 3
+#   bar        # maps the 3rd CSV row position to 'bar' due to the current cursor position
+#   baz.at(0)  # maps the 0th CSV row position to 'baz' but only increments the cursor 1 position to 4
+# Each attribute mapping may be configured to parse the record using a lambda or a method name
+#   foo.map lambda{|row| row[2].strip } # maps the 2nd row position value with leading and trailing whitespace removed to 'foo'.
+#   bar.map :clean_bar  # maps the result of the clean_bar method to 'bar'. clean_bar must accept the row as a parameter.
+# Attribute mapping declarations and "modifiers" may be chained
+#   foo.at(4).map :some_transform
+#
+# === Create Reusable Mappings
+# Both +import_csv+ and +import_string+ accept an instance of RowMap as an optional mapping parameter.  
+# The easiest way to create an instance of a RowMap is by using +map_csv+.
+#   a_row_map = map_csv do 
+#     # declare mapping here
+#   end
+# Then you can reuse the mapping
+#   results = import_string(some_string, a_row_map)
+#   other_results = import_csv('/path/to/file.csv', a_row_map)
+#
 module CsvMapper
   VERSION = '0.0.1'
 
