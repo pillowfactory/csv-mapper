@@ -63,8 +63,8 @@ require 'fastercsv'
 #     # declare mapping here
 #   end
 # Then you can reuse the mapping
-#   results = import_string(some_string, a_row_map)
-#   other_results = import_csv('/path/to/file.csv', a_row_map)
+#   results = import(some_string, :type => :io, :map => a_row_map)
+#   other_results = import('/path/to/file.csv', :map => a_row_map)
 #
 module CsvMapper
   VERSION = '0.0.1'
