@@ -26,7 +26,7 @@ describe CsvMapper::RowMap do
   end
 
   it "should map to a OpenStruct by default" do
-    @row_map.parse(@csv_row).should be_instance_of OpenStruct
+    @row_map.parse(@csv_row).should be_instance_of(OpenStruct)
   end
   
   it "should parse a CSV row returning the mapped result" do
@@ -44,16 +44,16 @@ describe CsvMapper::RowMap do
     @row_map.foo
     @row_map.bar
     
-    (result = @row_map.parse(@csv_row)).should be_instance_of TestMapToClass
+    (result = @row_map.parse(@csv_row)).should be_instance_of(TestMapToClass)
     result.foo.should == @csv_row[0]
     result.bar.should == @csv_row[1]
     result.baz.should == :default_baz
   end
     
   it "should start at the specified CSV row" do
-    @row_map.start_at_row.should be 0
-    @row_map.start_at_row 1
-    @row_map.start_at_row.should be 1
+    @row_map.start_at_row.should be(0)
+    @row_map.start_at_row(1)
+    @row_map.start_at_row.should be(1)
   end
   
   it "should allow before row processing" do
@@ -64,7 +64,7 @@ describe CsvMapper::RowMap do
     
     result = @row_map.parse(@csv_row)
     result.first_name.should == :changed_name
-    result.foo.should_not equal 'bar'
+    result.foo.should == 'bar'
   end
   
   it "should allow after row processing" do
@@ -74,11 +74,11 @@ describe CsvMapper::RowMap do
   end
   
   it "should have a moveable cursor" do
-    @row_map.cursor.should be 0
+    @row_map.cursor.should be(0)
     @row_map.move_cursor
-    @row_map.cursor.should be 1
+    @row_map.cursor.should be(1)
     @row_map.move_cursor 3
-    @row_map.cursor.should be 4
+    @row_map.cursor.should be(4)
   end
   
   it "should skip indexes" do
@@ -98,20 +98,20 @@ describe CsvMapper::RowMap do
   end
   
   it "should maintain a collection of attribute mappings" do
-    @row_map.mapped_attributes.should be_kind_of Enumerable
+    @row_map.mapped_attributes.should be_kind_of(Enumerable)
   end
   
   it "should lazy initialize attribute maps and move the cursor" do
     pre_cursor = @row_map.cursor
-    (attr_map = @row_map.first_name).should be_instance_of CsvMapper::AttributeMap
-    attr_map.index.should be pre_cursor
-    @row_map.cursor.should be (pre_cursor + 1)
+    (attr_map = @row_map.first_name).should be_instance_of(CsvMapper::AttributeMap)
+    attr_map.index.should be(pre_cursor)
+    @row_map.cursor.should be(pre_cursor + 1)
   end
   
   it "should lazy initialize attribute maps with optional cursor position" do
     pre_cursor = @row_map.cursor
-    @row_map.last_name(1).index.should be 1
-    @row_map.cursor.should be 1
+    @row_map.last_name(1).index.should be(1)
+    @row_map.cursor.should be(1)
   end
   
   it "should share it context with its mappings" do

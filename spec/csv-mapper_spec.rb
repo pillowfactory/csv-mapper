@@ -12,7 +12,7 @@ describe CsvMapper do
       start_at_row 2      
     end
     
-    mapping.should be_instance_of CsvMapper::RowMap
+    mapping.should be_instance_of(CsvMapper::RowMap)
     mapping.start_at_row.should == 2
   end
   
@@ -23,7 +23,7 @@ describe CsvMapper do
       second
     end
     
-    results.should be_kind_of Enumerable
+    results.should be_kind_of(Enumerable)
     results.should have(1).things
     results[0].first.should == 'foo'
     results[0].second.should == 'bar'
