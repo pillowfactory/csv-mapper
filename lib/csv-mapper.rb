@@ -35,7 +35,9 @@ require 'fastercsv'
 # * +start_at_row+ - Specify what row to begin parsing at.  Use this to skip headers.
 # * +before_row+ - Accepts an Array of method name symbols or lambdas to be invoked before parsing each row.
 # * +after_row+ - Accepts an Array of method name symbols or lambdas to be invoked after parsing each row.
+# * +delimited_by+ - Accepts a character to be used to delimit columns. Use this to specify pipe-delimited files.
 # * <tt>\_SKIP_</tt> - Use as a placehold to skip a CSV column index.
+# * +parser_options+ - Accepts a hash of FasterCSV options.  Can be anything FasterCSV::new()[http://fastercsv.rubyforge.org/classes/FasterCSV.html#M000018] understands
 # 
 # ===== Attribute Mappings
 # Attribute mappings are created by using the name of the attribute to be mapped to.  
@@ -137,32 +139,9 @@ module CsvMapper
       end
     end
     
-    # The current cursor location
-    def cursor  # :nodoc:
-      @cursor ||= 0
-    end
-    
-    # Move the cursor relative to it's current position
-    def move_cursor(positions=1) # :nodoc:
-      self.cursor += positions
-    end
-    
-    # Given a CSV row return an instance of an object defined by this mapping
-    def parse(csv_row)
-      target = self.map_to_class.new
-      @before_filters.each {|filter| filter.call(csv_row, target) }
-        
-      self.mapped_attributes.inject(target) do |result, attr_map|
-        result.send("#{attr_map.name}=".to_sym, attr_map.parse(csv_row))
-        result
-      end
-      
-      @after_filters.each {|filter| filter.call(csv_row, target) }
-      
-      return target
-    end
-    
     # Specify a hash of FasterCSV options to be used for CSV parsing
+    #
+    # Can be anything FasterCSV::new()[http://fastercsv.rubyforge.org/classes/FasterCSV.html#M000018] accepts
     def parser_options(opts=nil)
       @parser_options = opts if opts
       @parser_options.merge :col_sep => @delimited_by 
@@ -207,6 +186,31 @@ module CsvMapper
       self.mapped_attributes << attr_mapping
       attr_mapping
     end      
+    
+    # The current cursor location
+    def cursor  # :nodoc:
+      @cursor ||= 0
+    end
+    
+    # Move the cursor relative to it's current position
+    def move_cursor(positions=1) # :nodoc:
+      self.cursor += positions
+    end
+    
+    # Given a CSV row return an instance of an object defined by this mapping
+    def parse(csv_row)
+      target = self.map_to_class.new
+      @before_filters.each {|filter| filter.call(csv_row, target) }
+        
+      self.mapped_attributes.inject(target) do |result, attr_map|
+        result.send("#{attr_map.name}=".to_sym, attr_map.parse(csv_row))
+        result
+      end
+      
+      @after_filters.each {|filter| filter.call(csv_row, target) }
+      
+      return target
+    end
     
     protected # :nodoc:
     
