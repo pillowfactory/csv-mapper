@@ -6,20 +6,19 @@ require 'fastercsv'
 
 # This module provides the main interface for importing CSV files & data to mapped Ruby objects.
 # = Usage
-# Including CsvMapper will provide three methods:
-# - +import_csv+
-# - +import_string+
+# Including CsvMapper will provide two methods:
+# - +import+
 # - +map_csv+
 #
 # See csv-mapper.rb[link:files/lib/csv-mapper_rb.html] for method docs.
 #
 # === Import From File
-#   results = import_csv('/path/to/file.csv') do
+#   results = import('/path/to/file.csv') do
 #     # declare mapping here
 #   end
 #
-# === Import From String
-#   results = import_string(csv_string) do
+# === Import From String or IO
+#   results = import(csv_data, :type => :io) do
 #     # declare mapping here
 #   end
 #

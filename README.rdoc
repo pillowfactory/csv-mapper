@@ -1,6 +1,6 @@
 = README
 
-by {Luke Pillow}[http://www.pillowfactory.org]
+by Luke Pillow
 
 == DESCRIPTION:
 
@@ -21,7 +21,7 @@ The following example will import a CSV file to an Array of OpenStruct[http://ru
 ==== Simple Usage Example
   include CsvMapper
 
-  results = import_csv('/path/to/file.csv') do
+  results = import('/path/to/file.csv') do
     start_at_row 1
     [first_name, last_name, age]
   end
