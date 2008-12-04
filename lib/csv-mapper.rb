@@ -2,6 +2,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'ostruct'
+require 'fastercsv'
 
 # This module provides the main interface for importing CSV files & data to mapped Ruby objects.
 # = Usage
@@ -67,16 +68,6 @@ require 'ostruct'
 module CsvMapper
   VERSION = '0.0.1'
 
-  # Prefer FasterCSV over CSV 
-  Parser =
-    begin
-      require 'fastercsv'
-      FasterCSV
-    rescue LoadError
-      require 'csv'
-      CSV
-    end
-
   # Create a new RowMap instance from the definition in the given block.
   def map_csv(&map_block)
     (map = CsvMapper::RowMap.new(self)).instance_eval(&map_block)
@@ -89,7 +80,7 @@ module CsvMapper
     map = row_map || map_csv(&map_block)
     
     results, i = [], 0
-    Parser.foreach(csv_path) do |row|
+    FasterCSV.foreach(csv_path) do |row|
       results << map.parse(row) if i >= map.start_at_row
       i += 1
     end
@@ -103,7 +94,7 @@ module CsvMapper
     map = row_map || map_csv(&map_block)
     
     results, i = [], 0
-    Parser.parse(csv_string) do |row|
+    FasterCSV.parse(csv_string) do |row|
       results << map.parse(row) if i >= map.start_at_row
       i += 1
     end

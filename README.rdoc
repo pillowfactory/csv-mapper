@@ -34,8 +34,7 @@ See CsvMapper for a more detailed description
 	
 == REQUIREMENTS:
 
-FasterCSV[http://fastercsv.rubyforge.org/] is recommended, but is not required nor declared a gem dependency.
-CsvMapper will use FasterCSV if it's available or it will fall back on CSV[http://ruby-doc.org/core/classes/CSV.html] if it's not.
+FasterCSV[http://fastercsv.rubyforge.org/]
 
 == INSTALL:
 
