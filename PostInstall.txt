@@ -1,0 +1,5 @@
+
+For more information on CSV Mapper, see http://csv-mapper.rubyforge.org
+
+
+
