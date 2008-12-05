@@ -14,7 +14,7 @@ h2. The basics
 CSV Mapper makes it easy to import data from CSV files directly to a collection of any type of Ruby object.
 The simplest way to create mappings is declare the names of the attributes in the order corresponding to the CSV file column order.  For more complex mappings you can assign lambdas or methods to be used to convert data from the CSV row to the value of the declared attribute.
 
-See CsvMapper RDoc for detailed mapping examples.
+See "CsvMapper RDoc":rdoc for detailed mapping examples.
 
 h2. Demonstration of usage
 
@@ -47,7 +47,7 @@ results.first.age         # 27
 
 h3. Import to ActiveRecord Example
 
-Although CsvMapper has no dependency on ActiveRecord; it‘s easy to import a CSV file to ActiveRecord models and save them.
+Although CSV Mapper has no dependency on ActiveRecord; it‘s easy to import a CSV file to ActiveRecord models and save them.
 
 <pre syntax="ruby">
 require 'csv-mapper'

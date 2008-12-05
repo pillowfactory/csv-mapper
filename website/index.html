@@ -44,7 +44,7 @@
 <h2>The basics</h2>
 <p><span class="caps">CSV</span> Mapper makes it easy to import data from <span class="caps">CSV</span> files directly to a collection of any type of Ruby object.<br />
 The simplest way to create mappings is declare the names of the attributes in the order corresponding to the <span class="caps">CSV</span> file column order.  For more complex mappings you can assign lambdas or methods to be used to convert data from the <span class="caps">CSV</span> row to the value of the declared attribute.</p>
-<p>See CsvMapper RDoc for detailed mapping examples.</p>
+<p>See <a href="rdoc">CsvMapper RDoc</a> for detailed mapping examples.</p>
 <h2>Demonstration of usage</h2>
 <h3>Example <span class="caps">CSV</span> File Structure</h3>
 <pre>
@@ -70,7 +70,7 @@ Bat,Man,52
 <span class="ident">results</span><span class="punct">.</span><span class="ident">first</span><span class="punct">.</span><span class="ident">age</span>         <span class="comment"># 27</span>
 </pre></p>
 <h3>Import to ActiveRecord Example</h3>
-<p>Although CsvMapper has no dependency on ActiveRecord; it‘s easy to import a <span class="caps">CSV</span> file to ActiveRecord models and save them.</p>
+<p>Although <span class="caps">CSV</span> Mapper has no dependency on ActiveRecord; it‘s easy to import a <span class="caps">CSV</span> file to ActiveRecord models and save them.</p>
 <p><pre class='syntax'>
 <span class="ident">require</span> <span class="punct">'</span><span class="string">csv-mapper</span><span class="punct">'</span>
 
