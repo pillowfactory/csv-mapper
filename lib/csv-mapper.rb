@@ -91,7 +91,6 @@ module CsvMapper
     results = []
     FasterCSV.new(csv_data, map.parser_options ).each_with_index do |row, i|
       results << map.parse(row) if i >= map.start_at_row
-      i += 1
     end
     
     results
