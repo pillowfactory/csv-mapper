@@ -54,7 +54,7 @@ FasterCSV[http://fastercsv.rubyforge.org/]
 
 == INSTALL:
 
-* TBD
+* sudo gem install csv-mapper
 
 == LICENSE:
 
