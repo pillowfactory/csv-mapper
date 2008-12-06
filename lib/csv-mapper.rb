@@ -57,7 +57,7 @@ require 'fastercsv'
 #   foo.at(4).map :some_transform
 #
 # === Create Reusable Mappings
-# Both +import_csv+ and +import_string+ accept an instance of RowMap as an optional mapping parameter.  
+# The +import+ method accepts an instance of RowMap as an optional mapping parameter.  
 # The easiest way to create an instance of a RowMap is by using +map_csv+.
 #   a_row_map = map_csv do 
 #     # declare mapping here
