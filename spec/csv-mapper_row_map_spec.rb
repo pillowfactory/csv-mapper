@@ -49,11 +49,21 @@ describe CsvMapper::RowMap do
     result.bar.should == @csv_row[1]
     result.baz.should == :default_baz
   end
+
+  it "should define Infinity" do
+    CsvMapper::RowMap::Infinity.should == 1.0/0
+  end
     
   it "should start at the specified CSV row" do
-    @row_map.start_at_row.should be(0)
+    @row_map.start_at_row.should == 0
     @row_map.start_at_row(1)
-    @row_map.start_at_row.should be(1)
+    @row_map.start_at_row.should == 1
+  end
+  
+  it "should stop at the specified row" do
+    @row_map.stop_at_row.should be(CsvMapper::RowMap::Infinity)
+    @row_map.stop_at_row(6)
+    @row_map.stop_at_row.should == 6
   end
   
   it "should allow before row processing" do

@@ -35,8 +35,18 @@ describe CsvMapper do
       [first_name, last_name, age]
     end
     
-    results.size.should be(3)
+    results.size.should == 3
   end 
+  
+  it "should stop importing at a specified row" do
+    results = import(File.dirname(__FILE__) + '/test.csv') do
+      start_at_row 1
+      stop_at_row 2
+      [first_name, last_name, age]
+    end
+
+    results.size.should == 2
+  end
   
   it "should import non-comma delimited files" do
     piped_io = 'foo|bar|00|01'

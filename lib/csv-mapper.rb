@@ -90,7 +90,7 @@ module CsvMapper
     
     results = []
     FasterCSV.new(csv_data, map.parser_options ).each_with_index do |row, i|
-      results << map.parse(row) if i >= map.start_at_row
+      results << map.parse(row) if i >= map.start_at_row && i <= map.stop_at_row
     end
     
     results
@@ -103,6 +103,7 @@ module CsvMapper
     #Start with a 'blank slate'
     instance_methods.each { |m| undef_method m unless m =~ /^__||instance_eval/ }
     
+    Infinity = 1.0/0
     attr_reader :mapped_attributes
     
     # Create a new instance with access to an evaluation context 
@@ -112,6 +113,7 @@ module CsvMapper
       @after_filters = []
       @parser_options = {}
       @start_at_row = 0
+      @stop_at_row = Infinity
       @delimited_by = FasterCSV::DEFAULT_OPTIONS[:col_sep]
       @mapped_attributes = []
       
@@ -155,6 +157,12 @@ module CsvMapper
     def start_at_row(row_number=nil)
       @start_at_row = row_number if row_number
       @start_at_row
+    end
+    
+    # Declare the last row to be parsed in a CSV.
+    def stop_at_row(row_number=nil)
+      @stop_at_row = row_number if row_number
+      @stop_at_row
     end
     
     # Declare method name symbols and/or lambdas to be executed before each row.
