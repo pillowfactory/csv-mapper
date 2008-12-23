@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
+include CsvMapper
+
 describe CsvMapper do
     
   before(:each) do    
