@@ -1,3 +1,6 @@
+== 0.0.3 2008-12-22
+* Fixed specs to work with RSpec 1.1.9 and later where Modules aren't auto included
+
 == 0.0.2 2008-12-15
 
 * Added #stop_at_row method to RowMap
