@@ -30,6 +30,17 @@ The following example will import a CSV file to an Array of OpenStruct[http://ru
   results.first.last_name   # Doe
   results.first.age         # 27
 
+==== Automagical Attribute Discovery Example
+  include CsvMapper
+
+  results = import('/path/to/file.csv') do
+    read_attributes_from_file
+  end
+
+  results.first.first_name  # John
+  results.first.last_name   # Doe
+  results.first.age         # 27
+
 ==== Import to ActiveRecord Example
 Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV file to ActiveRecord models and save them.
 
