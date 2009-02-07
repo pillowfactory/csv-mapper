@@ -82,10 +82,11 @@ module CsvMapper
   # <tt>:map</tt>:: Specify an instance of a RowMap to take presidence over a given block defintion.
   #
   def import(data, options={}, &map_block)
+    csv_data = options[:type] == :io ? data : File.new(data, 'r')
+
     config = { :type => :file_path,
-               :map => map_csv(&map_block) }.merge!(options)
-    
-    csv_data = config[:type] == :io ? data : File.new(data, 'r')
+               :map => map_csv_with_data(csv_data, &map_block) }.merge!(options)
+
     map = config[:map]
     
     results = []
@@ -107,8 +108,9 @@ module CsvMapper
     attr_reader :mapped_attributes
     
     # Create a new instance with access to an evaluation context 
-    def initialize(context, &map_block)
+    def initialize(context, csv_data = nil, &map_block)
       @context = context
+      @csv_data = csv_data
       @before_filters = []
       @after_filters = []
       @parser_options = {}
@@ -133,6 +135,26 @@ module CsvMapper
       end
     end
     
+    # Allow us to read the first line of a csv file to automatically generate the attribute names.
+    # Spaces are replaced with underscores and non-word characters are removed.
+    #
+    # Keep in mind that there is potential for overlap in using this (i.e. you have a field named
+    # files+ and one named files- and they both get named 'files').
+    #
+    # You can specify aliases to rename fields to prevent conflicts and/or improve readability and compatibility.
+    #
+    # i.e. read_attributes_from_file('files+' => 'files_plus', 'files-' => 'files_minus)
+    def read_attributes_from_file aliases = {}
+      attributes = FasterCSV.new(@csv_data, @parser_options).readline
+      @start_at_row = [ @start_at_row, 1 ].max
+      @csv_data.rewind
+      attributes.each_with_index do |name, index|
+        name.strip!
+        use_name = aliases[name] || name.gsub(/\s+/, '_').gsub(/[\W]+/, '').downcase
+        add_attribute use_name, index
+      end
+    end
+
     # Specify a hash of FasterCSV options to be used for CSV parsing
     #
     # Can be anything FasterCSV::new()[http://fastercsv.rubyforge.org/classes/FasterCSV.html#M000018] accepts
@@ -298,5 +320,11 @@ module CsvMapper
       @transformer.call(csv_row)
     end
     
+  end
+
+  protected
+  # Create a new RowMap instance from the definition in the given block and pass the csv_data.
+  def map_csv_with_data(csv_data, &map_block) # :nodoc:
+    CsvMapper::RowMap.new(self, csv_data, &map_block)
   end
 end
