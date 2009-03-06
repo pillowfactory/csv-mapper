@@ -2,7 +2,21 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'ostruct'
-require 'fastercsv'
+
+# the following is slightly modified from Gregory Brown's
+# solution on the Ruport Blaag:
+# http://ruport.blogspot.com/2008/03/fastercsv-api-shim-for-19.html
+if RUBY_VERSION > "1.9"
+ require "csv"
+ unless defined? FCSV
+   class Object
+     FasterCSV = CSV
+     alias_method :FasterCSV, :CSV
+   end
+ end
+else
+ require "fastercsv"
+end
 
 # This module provides the main interface for importing CSV files & data to mapped Ruby objects.
 # = Usage

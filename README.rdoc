@@ -4,7 +4,7 @@ by Luke Pillow
 
 == DESCRIPTION:
 
-CsvMapper is a small library intended to simplify the common steps involved with importing CSV files to a usable form in Ruby.
+CsvMapper is a small library intended to simplify the common steps involved with importing CSV files to a usable form in Ruby.  CsvMapper is compatible with recent 1.8 versions of Ruby as well as Ruby 1.9+
 
 == EXAMPLES:
 
@@ -61,7 +61,7 @@ See CsvMapper for a more detailed description
 	
 == REQUIREMENTS:
 
-FasterCSV[http://fastercsv.rubyforge.org/]
+FasterCSV[http://fastercsv.rubyforge.org/] on pre 1.9 versions of Ruby
 
 == INSTALL:
 
