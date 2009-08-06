@@ -1,3 +1,8 @@
+== 0.0.4 2009-08-05
+* Merged contributions from Jeffrey Chupp - http://semanticart.com
+  * Added support for "Automagical Attribute Discovery"
+  * Added Ruby 1.9 compatibility
+
 == 0.0.3 2008-12-22
 * Fixed specs to work with RSpec 1.1.9 and later where Modules aren't auto included
 

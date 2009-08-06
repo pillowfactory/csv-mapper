@@ -1,7 +1,5 @@
 = README
 
-by Luke Pillow
-
 == DESCRIPTION:
 
 CsvMapper is a small library intended to simplify the common steps involved with importing CSV files to a usable form in Ruby.  CsvMapper is compatible with recent 1.8 versions of Ruby as well as Ruby 1.9+

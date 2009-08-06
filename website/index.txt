@@ -45,6 +45,20 @@ results.first.last_name   # Doe
 results.first.age         # 27
 </pre>
 
+h3. Automagical Attribute Discovery Example
+
+<pre syntax="ruby">
+include CsvMapper
+
+results = import('/path/to/file.csv') do
+  read_attributes_from_file
+end
+
+results.first.first_name  # John
+results.first.last_name   # Doe
+results.first.age         # 27
+</pre>
+
 h3. Import to ActiveRecord Example
 
 Although CSV Mapper has no dependency on ActiveRecord; it‘s easy to import a CSV file to ActiveRecord models and save them.

@@ -81,7 +81,7 @@ end
 #   other_results = import('/path/to/file.csv', :map => a_row_map)
 #
 module CsvMapper
-  VERSION = '0.0.3'
+  VERSION = '0.0.4'
 
   # Create a new RowMap instance from the definition in the given block.
   def map_csv(&map_block)
