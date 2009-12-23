@@ -117,6 +117,8 @@ module CsvMapper
   def map_csv_with_data(csv_data, &map_block) # :nodoc:
     CsvMapper::RowMap.new(self, csv_data, &map_block)
   end
+  
+  extend self
 end
 
 require 'csv-mapper/row_map'
