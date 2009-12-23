@@ -128,9 +128,8 @@ module CsvMapper
       target = self.map_to_class.new
       @before_filters.each {|filter| filter.call(csv_row, target) }
       
-      self.mapped_attributes.inject(target) do |result, attr_map|
-        result.send("#{attr_map.name}=".to_sym, attr_map.parse(csv_row))
-        result
+      self.mapped_attributes.each do |attr_map|
+        target.method("#{attr_map.name}=".to_sym).call(attr_map.parse(csv_row))
       end
     
       @after_filters.each {|filter| filter.call(csv_row, target) }
@@ -165,7 +164,12 @@ module CsvMapper
     end
           
     def map_to_class # :nodoc:
-      @map_to_klass || OpenStruct
+      unless @map_to_klass
+        attrs = mapped_attributes.collect {|attr_map| attr_map.name}
+        @map_to_klass = Struct.new(nil, *attrs)
+      end
+      
+      @map_to_klass
     end
   
     def cursor=(value) # :nodoc:

@@ -25,8 +25,8 @@ describe CsvMapper::RowMap do
     @row_map.parse(@csv_row).should_not be_nil
   end
 
-  it "should map to a OpenStruct by default" do
-    @row_map.parse(@csv_row).should be_instance_of(OpenStruct)
+  it "should map to a Struct by default" do
+    @row_map.parse(@csv_row).should be_kind_of(Struct)
   end
   
   it "should parse a CSV row returning the mapped result" do
@@ -78,9 +78,11 @@ describe CsvMapper::RowMap do
   end
   
   it "should allow after row processing" do
-    @row_map.after_row lambda{|row, target| target.bam = :woot}
+    filter_var = nil
+    @row_map.after_row lambda{|row, target| filter_var = :woot}
     
-    @row_map.parse(@csv_row).bam.should == :woot
+    @row_map.parse(@csv_row)
+    filter_var.should == :woot
   end
   
   it "should have a moveable cursor" do
