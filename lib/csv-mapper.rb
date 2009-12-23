@@ -2,7 +2,6 @@ dir = File.dirname(__FILE__)
 $LOAD_PATH.unshift dir unless $LOAD_PATH.include?(dir)
 
 require 'rubygems'
-require 'ostruct'
 
 # the following is slightly modified from Gregory Brown's
 # solution on the Ruport Blaag:
@@ -82,7 +81,6 @@ end
 #   other_results = import('/path/to/file.csv', :map => a_row_map)
 #
 module CsvMapper
-  VERSION = '0.0.4'
 
   # Create a new RowMap instance from the definition in the given block.
   def map_csv(&map_block)
