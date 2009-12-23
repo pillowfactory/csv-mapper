@@ -35,7 +35,7 @@ module CsvMapper
       @map_to_klass = klass
     
       defaults.each do |name, value|
-        self.add_attribute(name, -99).map lambda{|row| value}
+        self.add_attribute(name, -99).map lambda{|row, index| value}
       end
     end
   

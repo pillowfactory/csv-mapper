@@ -7,7 +7,7 @@ describe CsvMapper::RowMap do
   end
   
   class TestMapContext
-    def transform(row)
+    def transform(row, index)
       :transform_success
     end
     
@@ -124,7 +124,7 @@ describe CsvMapper::RowMap do
     @row_map.cursor.should be(1)
   end
   
-  it "should share it context with its mappings" do
+  it "should share its context with its mappings" do
     @row_map.first_name.map(:transform)
     @row_map.parse(@csv_row).first_name.should == :transform_success
   end

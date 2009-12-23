@@ -22,14 +22,14 @@ module CsvMapper
     # Both the lambda or the method provided should accept a single +row+ parameter
     #
     # Returns this AttributeMap for chainability
-    def map(transform)
-      @transformer = transform
+    def map(transform=nil, &block_transform)
+      @transformer = block_transform || transform
       self
     end
   
     # Given a CSV row, return the value at this AttributeMap's index using any provided map transforms (see map)
     def parse(csv_row)
-      @transformer ? parse_transform(csv_row) : csv_row[self.index]
+      @transformer ? parse_transform(csv_row) : raw_value(csv_row)
     end
   
     # Access the raw value of the CSV row without any map transforms applied.
@@ -42,10 +42,10 @@ module CsvMapper
     def parse_transform(csv_row)
       if @transformer.is_a? Symbol
         transform_name = @transformer
-        @transformer = lambda{|row| @map_context.send(transform_name, row) }
+        @transformer = lambda{|row, index| @map_context.send(transform_name, row, index) }
       end
     
-      @transformer.call(csv_row)
+      @transformer.call(csv_row, @index)
     end
 end
 end

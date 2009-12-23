@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 describe CsvMapper::AttributeMap do
   
   class TestContext
-    def transform_it(row)
+    def transform_it(row, index)
       :transform_it_success
     end
   end
@@ -34,8 +34,13 @@ describe CsvMapper::AttributeMap do
     @row_attr.parse(@csv_row).should == @csv_row[1]
   end
 
-  it "should parse values using mapped transformer" do
-    @row_attr.map( lambda{|row| :success } )
+  it "should parse values using a mapped lambda transformers" do
+    @row_attr.map( lambda{|row, index| :success } )
+    @row_attr.parse(@csv_row).should == :success
+  end
+  
+  it "should parse values using a mapped block transformers" do
+    @row_attr.map {|row, index| :success }
     @row_attr.parse(@csv_row).should == :success
   end
   
