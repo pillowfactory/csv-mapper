@@ -45,7 +45,7 @@ end
 # know the corresponding CSV column index to associate with the attribute.
 # 
 # ===== The Basics
-# * +map_to+ - Override the default OpenStruct target. Accepts a class and an optional hash of default attribute names and values.
+# * +map_to+ - Override the default Struct target. Accepts a class and an optional hash of default attribute names and values.
 # * +start_at_row+ - Specify what row to begin parsing at.  Use this to skip headers.
 # * +before_row+ - Accepts an Array of method name symbols or lambdas to be invoked before parsing each row.
 # * +after_row+ - Accepts an Array of method name symbols or lambdas to be invoked after parsing each row.

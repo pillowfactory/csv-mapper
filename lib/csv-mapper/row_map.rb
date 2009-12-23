@@ -26,7 +26,7 @@ module CsvMapper
       self.instance_eval(&map_block) if block_given?
     end
   
-    # Each row of a CSV is parsed and mapped to a new instance of a Ruby class; OpenStruct by default.
+    # Each row of a CSV is parsed and mapped to a new instance of a Ruby class; Struct by default.
     # Use this method to change the what class each row is mapped to.  
     # The given class must respond to a parameter-less #new and all attribute mappings defined.
     # Providing a hash of defaults will ensure that each resulting object will have the providing name and attribute values 

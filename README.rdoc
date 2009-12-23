@@ -6,7 +6,7 @@ CsvMapper is a small library intended to simplify the common steps involved with
 
 == EXAMPLES:
 
-The following example will import a CSV file to an Array of OpenStruct[http://ruby-doc.org/core/classes/OpenStruct.html] instances.
+The following example will import a CSV file to an Array of Struct[http://www.ruby-doc.org/core/classes/Struct.html] instances.
 
 ==== Example CSV File Structure
 
@@ -48,7 +48,7 @@ Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV 
   include CsvMapper
   
   results = import('/path/to/file.csv') do
-    map_to Person # Map to the Person ActiveRecord class (defined above) instead of the default OpenStruct.
+    map_to Person # Map to the Person ActiveRecord class (defined above) instead of the default Struct.
     after_row lambda{|row, person| person.save }  # Call this lambda and save each record after it's parsed.
 		
     start_at_row 1
