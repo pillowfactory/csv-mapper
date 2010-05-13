@@ -1,3 +1,12 @@
+== 0.5.0 2010-05-12
+* Parsing performance is now approximately 8x-10x faster when not specifying a custom map_to class.
+* Default class mapping is now Struct instead of OpenStruct
+* Recommended usage is now "CsvMapper.import(...)"
+  * Fixes recurring problem with using CsvMapper in rake tasks
+  * Keeps everything a little cleaner
+* #map transformations now prefer blocks over lambdas or symbols. 
+* Converted from using newgem to jeweler for managing the library itself.
+
 == 0.0.4 2009-08-05
 * Merged contributions from Jeffrey Chupp - http://semanticart.com
   * Added support for "Automagical Attribute Discovery"
