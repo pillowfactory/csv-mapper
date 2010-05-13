@@ -129,7 +129,7 @@ module CsvMapper
       @before_filters.each {|filter| filter.call(csv_row, target) }
       
       self.mapped_attributes.each do |attr_map|
-        target.method("#{attr_map.name}=".to_sym).call(attr_map.parse(csv_row))
+        target.send("#{attr_map.name}=", attr_map.parse(csv_row))
       end
     
       @after_filters.each {|filter| filter.call(csv_row, target) }
