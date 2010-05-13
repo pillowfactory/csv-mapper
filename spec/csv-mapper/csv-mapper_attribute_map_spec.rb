@@ -38,8 +38,18 @@ describe CsvMapper::AttributeMap do
     @row_attr.map( lambda{|row, index| :success } )
     @row_attr.parse(@csv_row).should == :success
   end
+
+  it "should parse values using a mapped lambda transformer that only accepts the row" do
+    @row_attr.map( lambda{|row| :success } )
+    @row_attr.parse(@csv_row).should == :success
+  end
   
   it "should parse values using a mapped block transformers" do
+    @row_attr.map {|row, index| :success }
+    @row_attr.parse(@csv_row).should == :success
+  end
+
+  it "should parse values using a mapped block transformer that only accepts the row" do
     @row_attr.map {|row, index| :success }
     @row_attr.parse(@csv_row).should == :success
   end

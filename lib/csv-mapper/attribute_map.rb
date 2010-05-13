@@ -45,7 +45,11 @@ module CsvMapper
         @transformer = lambda{|row, index| @map_context.send(transform_name, row, index) }
       end
     
-      @transformer.call(csv_row, @index)
+      if @transformer.arity == 1
+        @transformer.call(csv_row) 
+      else
+        @transformer.call(csv_row, @index)
+      end
     end
 end
 end
