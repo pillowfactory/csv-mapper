@@ -17,9 +17,7 @@ The following example will import a CSV file to an Array of Struct[http://www.ru
   ...etc...
 
 ==== Simple Usage Example
-  include CsvMapper
-
-  results = import('/path/to/file.csv') do
+  results = CsvMapper.import('/path/to/file.csv') do
     start_at_row 1
     [first_name, last_name, age]
   end
@@ -29,9 +27,7 @@ The following example will import a CSV file to an Array of Struct[http://www.ru
   results.first.age         # 27
 
 ==== Automagical Attribute Discovery Example
-  include CsvMapper
-
-  results = import('/path/to/file.csv') do
+  results = CsvMapper.import('/path/to/file.csv') do
     read_attributes_from_file
   end
 
@@ -45,9 +41,7 @@ Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV 
   # Define an ActiveRecord model
   class Person < ActiveRecord::Base; end
 
-  include CsvMapper
-  
-  results = import('/path/to/file.csv') do
+  results = CsvMapper.import('/path/to/file.csv') do
     map_to Person # Map to the Person ActiveRecord class (defined above) instead of the default Struct.
     after_row lambda{|row, person| person.save }  # Call this lambda and save each record after it's parsed.
 		
