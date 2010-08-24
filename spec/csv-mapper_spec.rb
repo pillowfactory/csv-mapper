@@ -143,6 +143,14 @@ describe CsvMapper do
       results[1].number_of_years_old.should == '26'
     end
 
+    it "should be able to assign default column names when column names are null" do
+      results = CsvMapper.import(File.dirname(__FILE__) + '/test_with_empty_column_names.csv') do
+        read_attributes_from_file
+      end
+
+      results[1]._field_1.should == 'unnamed_value'
+    end
+
     it "should import non-comma delimited files" do
       piped_io = 'foo|bar|00|01'
     
@@ -156,7 +164,7 @@ describe CsvMapper do
       results[0].second.should == 'bar'
     end
     
-    it "should not allow tranformation mappings" do
+    it "should not allow transformation mappings" do
       def upcase_name(row)
         row[0].upcase
       end
