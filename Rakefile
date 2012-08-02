@@ -10,7 +10,7 @@ begin
     gem.email = "lpillow@gmail.com"
     gem.homepage = "http://github.com/pillowfactory/csv-mapper"
     gem.authors = ["Luke Pillow"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "rspec", "< 2.0.0"
     gem.add_dependency "fastercsv"  
     gem.extra_rdoc_files << "History.txt"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
