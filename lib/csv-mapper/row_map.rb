@@ -49,7 +49,7 @@ module CsvMapper
     #
     # i.e. read_attributes_from_file('files+' => 'files_plus', 'files-' => 'files_minus)
     def read_attributes_from_file aliases = {}
-      attributes = FasterCSV.new(@csv_data, @parser_options).readline
+      attributes = FasterCSV.new(@csv_data, parser_options).readline
       @start_at_row = [ @start_at_row, 1 ].max
       @csv_data.rewind
       attributes.each_with_index do |name, index|

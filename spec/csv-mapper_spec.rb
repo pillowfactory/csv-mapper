@@ -63,6 +63,17 @@ describe CsvMapper do
       results[1].number_of_years_old.should == '26'
     end
 
+    it "should read attributes from a non-comma delimited file" do
+      results = @mapped.import(File.dirname(__FILE__) + '/test.tsv') do
+        delimited_by "\t"
+        read_attributes_from_file('Age' => 'number_of_years_old')
+      end
+
+      results[1].first_name.should == 'Jane'
+      results[1].last_name.should == 'Doe'
+      results[1].number_of_years_old.should == '26'
+    end
+
     it "should import non-comma delimited files" do
       piped_io = 'foo|bar|00|01'
     
