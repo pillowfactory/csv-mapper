@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require File.expand_path(__FILE__ + '/../spec_helper.rb')
 
 describe CsvMapper do
   describe "included" do
@@ -58,6 +58,17 @@ describe CsvMapper do
         # we'll alias age here just as an example
         read_attributes_from_file('Age' => 'number_of_years_old')
       end
+      results[1].first_name.should == 'Jane'
+      results[1].last_name.should == 'Doe'
+      results[1].number_of_years_old.should == '26'
+    end
+
+    it "should read attributes from a non-comma delimited file" do
+      results = @mapped.import(File.dirname(__FILE__) + '/test.tsv') do
+        delimited_by "\t"
+        read_attributes_from_file('Age' => 'number_of_years_old')
+      end
+
       results[1].first_name.should == 'Jane'
       results[1].last_name.should == 'Doe'
       results[1].number_of_years_old.should == '26'
