@@ -89,6 +89,13 @@ describe CsvMapper do
       
       results[0].first_name.should == 'JOHN'
     end
+
+    it "should allow us to not capture the output and return a row count instead" do
+      io = "foo,bar,00,01\na,b,c,d"
+      results = @mapped.process(io, :type => :io, :capture_output => false)
+
+      results.should == 2
+    end
   end
   
   describe "extended" do

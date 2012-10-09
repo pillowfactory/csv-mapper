@@ -95,27 +95,48 @@ module CsvMapper
   # <tt>:map</tt>:: Specify an instance of a RowMap to take presidence over a given block defintion.
   #
   def import(data, options={}, &map_block)
-    csv_data = options[:type] == :io ? data : File.new(data, 'r')
-
-    config = { :type => :file_path,
-               :map => map_csv_with_data(csv_data, &map_block) }.merge!(options)
-
-    map = config[:map]
-    
     results = []
-    FasterCSV.new(csv_data, map.parser_options ).each_with_index do |row, i|
-      results << map.parse(row) if i >= map.start_at_row && i <= map.stop_at_row
+    build_results(data, map_block, options) do |result|
+      results << result
     end
-    
     results
-  end  
+  end
+
+  # Process works the same was as import except that it returns a count of
+  # imported rows instead of the results. This is useful for processing large
+  # files.
+  def process(data, options={}, &map_block)
+    count = 0
+    build_results(data, map_block, options) do |result|
+      count = count.succ
+    end
+
+    count
+  end
 
   protected
   # Create a new RowMap instance from the definition in the given block and pass the csv_data.
   def map_csv_with_data(csv_data, &map_block) # :nodoc:
     CsvMapper::RowMap.new(self, csv_data, &map_block)
   end
-  
+
+  private
+  # Process each row and yield result to caller
+  def build_results(data, map_block, options={})
+    csv_data = options[:type] == :io ? data : File.new(data, 'r')
+
+    config = { :type => :file_path,
+               :map => map_csv_with_data(csv_data, &map_block) }.merge!(options)
+
+    map = config[:map]
+
+    FasterCSV.new(csv_data, map.parser_options ).each_with_index do |row, i|
+      if i >= map.start_at_row && i <= map.stop_at_row
+        yield map.parse(row)
+      end
+    end
+  end
+
   extend self
 end
 
