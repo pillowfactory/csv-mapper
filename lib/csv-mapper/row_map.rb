@@ -98,7 +98,7 @@ module CsvMapper
       self.add_filters(@before_filters, *befores)
     end
   
-    # Declare method name symbols and/or lambdas to be executed before each row.
+    # Declare method name symbols and/or lambdas to be executed after each row.
     # Each method or lambda must accept to parameters: +csv_row+, +target_object+
     # Methods names should refer to methods available within the RowMap's provided context
     def after_row(*afters)
